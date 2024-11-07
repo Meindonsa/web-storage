@@ -1,5 +1,5 @@
 import * as crypto from "crypto-js";
-import { compressToUTF16, decompressFromUTF16 } from "lz-string";
+import LZString from "lz-string";
 
 export class CryptoService {
     encrypt(data: any, secretKey: string): string {
@@ -9,7 +9,7 @@ export class CryptoService {
                 mode: crypto.mode.CBC,
                 padding: crypto.pad.Pkcs7,
             }).toString();
-            return compressToUTF16(encryptedData);
+            return LZString.compressToUTF16(encryptedData);
         } catch (error) {
             console.error("Encryption error:", error);
             throw error;
@@ -18,7 +18,7 @@ export class CryptoService {
 
     decrypt(encryptedData: string, secretKey: string): any {
         try {
-            const decompressedData = decompressFromUTF16(encryptedData);
+            const decompressedData = LZString.decompressFromUTF16(encryptedData);
             if (!decompressedData) {
                 console.error("Decompression failed, data is null or empty");
                 throw new Error("Decompression failed");
